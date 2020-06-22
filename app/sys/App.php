@@ -6,6 +6,7 @@ namespace app\sys;
 use app\helpers\ArrayHelper;
 use app\sys\cache\MemcacheCache;
 use app\sys\db\Connection;
+use app\sys\exceptions\ExceptionHandler;
 
 class App
 {
@@ -24,6 +25,8 @@ class App
         $this->getDBConnection(ArrayHelper::getValue('db', $config));
         $this->getCache(ArrayHelper::getValue('memcached', $config));
         $this->routes = $routes;
+
+        set_exception_handler([ExceptionHandler::class, 'handler']);
     }
 
     public function run()

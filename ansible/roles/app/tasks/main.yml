@@ -10,8 +10,8 @@
 - name: Create a database
   mysql_db:
     name: news
-    login_password: "{{ mysql_user }}"
-    login_user: "{{ mysql_password }}"
+    login_user: "{{ mysql_user }}"
+    login_password: "{{ mysql_password }}"
     state: present
 
 - name: Add www-data group to current user
@@ -23,10 +23,10 @@
     dest: "{{ base_root }}"
 
 - name: Composer install
-  shell: cd "{{ base_root }}"; composer install
+  shell: cd "{{ base_root }}/app"; composer install
 
-- name: Composer install
-  shell: cd "{{ base_root }}/app"; composer install; composer du
+- name: Composer dump-autoload
+  shell: cd "{{ base_root }}/app"; composer du
 
 - name: confing
   template:
