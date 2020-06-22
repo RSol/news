@@ -1,0 +1,28 @@
+---
+- name: Install and config nginx
+  hosts: '{{ target }}'
+  become: yes
+
+  tasks:
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: latest
+        update_cache: yes
+
+    - name: Config nginx
+      copy:
+        src: ./cfg/nginx/site.conf
+        dest: /etc/nginx/sites-available/site.conf
+
+    - name: Create symlink
+      file:
+        src: /etc/nginx/sites-available/site.conf
+        dest: /etc/nginx/sites-enabled/default
+        state: link
+
+    - name: Start nginx
+      service:
+        name: nginx
+        state: reloaded
+        enabled: yes

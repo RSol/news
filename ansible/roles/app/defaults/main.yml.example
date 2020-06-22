@@ -1,0 +1,5 @@
+---
+# defaults file for app
+base_root: /var/www/news
+mysql_user: root
+mysql_password: verysecret

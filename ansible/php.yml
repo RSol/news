@@ -1,0 +1,85 @@
+---
+- name: Install and config php
+  hosts: '{{ target }}'
+  become: yes
+  vars:
+    config_path: /etc/php/7.2/fpm/php.ini
+
+  tasks:
+    - name: Install php
+      apt:
+        name: "{{ item }}"
+        update_cache: yes
+        state: latest
+      loop:
+        - curl
+        - git
+        - mcrypt
+        - php7.2
+        - php7.2-common
+        - php7.2-cli
+        - php7.2-fpm
+        - php7.2-curl
+        - php7.2-gd
+        - php7.2-intl
+        - php7.2-json
+        - php7.2-mysql
+        - php7.2-mbstring
+        - php7.2-xml
+        - php7.2-zip
+        - libjpeg-progs
+        - jpegoptim
+        - pngquant
+
+    - name: file_uploads
+      ini_file:
+        path: "{{ config_path }}"
+        section: PHP
+        option: file_uploads
+        value: 'On'
+
+    - name: allow_url_fopen
+      ini_file:
+        path: "{{ config_path }}"
+        section: PHP
+        option: allow_url_fopen
+        value: 'On'
+
+    - name: memory_limit
+      ini_file:
+        path: "{{ config_path }}"
+        section: PHP
+        option: memory_limit
+        value: '256M'
+
+    - name: upload_max_filesize
+      ini_file:
+        path: "{{ config_path }}"
+        section: PHP
+        option: upload_max_filesize
+        value: '100M'
+
+    - name: max_execution_time
+      ini_file:
+        path: "{{ config_path }}"
+        section: PHP
+        option: max_execution_time
+        value: '120'
+
+    - name: date.timezone
+      ini_file:
+        path: "{{ config_path }}"
+        section: Date
+        option: date.timezone
+        value: 'Europe/Kiev'
+
+    - name: restart fpm
+      service:
+        name: php7.2-fpm
+        state: started
+        enabled: yes
+
+    - name: Install composer
+      shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+      args:
+        creates: /usr/local/bin/composer

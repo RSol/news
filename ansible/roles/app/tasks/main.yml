@@ -1,0 +1,34 @@
+---
+# tasks file for app
+- name: Create web root dir
+  file:
+    path: "{{ base_root }}"
+    group: www-data
+    state: directory
+    mode: '0755'
+
+- name: Create a database
+  mysql_db:
+    name: news
+    login_password: "{{ mysql_user }}"
+    login_user: "{{ mysql_password }}"
+    state: present
+
+- name: Add www-data group to current user
+  shell: usermod -a -G www-data slava_rudnev
+
+- name: Git clone
+  git:
+    repo: https://github.com/RSol/news.git
+    dest: "{{ base_root }}"
+
+- name: Composer install
+  shell: cd "{{ base_root }}"; composer install
+
+- name: Composer install
+  shell: cd "{{ base_root }}/app"; composer install; composer du
+
+- name: confing
+  template:
+    src: main-local.j2
+    dest: "{{ base_root }}/app/config/main-local.php"

@@ -1,0 +1,18 @@
+<?php
+
+$host = getenv('DB_HOST') ?: 'mysql';
+$database = getenv('MYSQL_DATABASE') ?: 'news';
+$user = getenv('DB_USER') ?: 'root';
+$password = getenv('MYSQL_ROOT_PASSWORD') ?: 'verysecret';
+
+return [
+    'db' => [
+        'dsn' => "mysql:dbname={$database};host={$host}",
+        'user' => $user,
+        'password' => $password,
+    ],
+    'memcached' => [
+        'host' => 'memcached',
+        'port' => 11211,
+    ],
+];

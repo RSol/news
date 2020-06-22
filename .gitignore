@@ -1,0 +1,23 @@
+# Editor directories and files
+.idea
+.vs
+
+# windows thumbnail cache
+Thumbs.db
+
+/*/*.bak
+
+# dicker
+/docker-compose.local.yml
+/docker/database
+
+
+# app
+.env
+main-local.php
+/app/vendor
+
+# ansible
+/ansible/hosts.txt
+/ansible/roles/app/templates/main-local.j2
+/ansible/roles/app/defaults/main.yml

@@ -1,0 +1,22 @@
+---
+- name: Install and config mysql
+  hosts: '{{ target }}'
+  become: yes
+  vars:
+    root_password: "{{ db_root_password }}"
+
+  tasks:
+    - name: Install mysql
+      apt:
+        name: "{{ item }}"
+        update_cache: yes
+        state: latest
+      loop:
+        - mariadb-server
+        - mariadb-client
+
+    - name: Start mysql
+      service:
+        name: mysql
+        state: started
+        enabled: yes

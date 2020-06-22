@@ -1,0 +1,20 @@
+{
+  "name": "rsol/news-for-telecom-club",
+  "description": "Test",
+  "minimum-stability": "dev",
+  "license": "proprietary",
+  "type": "project",
+  "authors": [
+    {
+      "name": "RSol",
+      "email": "slava.rudnev@gmail.com"
+    }
+  ],
+  "require": {
+    "fzaninotto/faker": "1.9.1"
+  },
+  "autoload": {
+    "psr-4": {"app\\": "."}
+  },
+  "optimize-autoloader": true
+}

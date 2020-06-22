@@ -1,0 +1,17 @@
+---
+- name: Install memcached
+  hosts: '{{ target }}'
+  become: yes
+
+  tasks:
+    - name: Install memcached
+      apt:
+        name: memcached
+        state: latest
+        update_cache: yes
+
+    - name: Start memcached
+      service:
+        name: memcached
+        state: reloaded
+        enabled: yes

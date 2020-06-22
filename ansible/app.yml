@@ -1,0 +1,9 @@
+---
+- name: App
+  hosts: '{{ target }}'
+  become: yes
+
+  roles:
+    - app
+
+
