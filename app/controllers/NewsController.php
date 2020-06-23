@@ -11,17 +11,29 @@ class NewsController extends Controller
 {
     public function index()
     {
+        $log = $this->getLogger();
+
+        $log->debug('start index');
         $total = (new News())->getTotalCount();
+        $log->debug('getTotal');
         $paginator = new Paginator($total);
         $params = $paginator->getPageParams();
+        $log->debug('paginator');
 
-        $news = MemcacheCache::getOrSet((new News())->getCacheKeyForList($params), static function () use ($params) {
+        $news = MemcacheCache::getOrSet((new News())->getCacheKeyForList($params), static function () use ($params, $log) {
+            $log->debug('before SQL');
+            $time = microtime(true);
             $data = (new News())->findAll($params);
+            $log->debug(microtime(true) - $time);
+            $log->debug('after SQL');
             return array_map(static function ($el) {
                 $el['category'] = News::getCategoryLabel($el['category_id']);
                 return $el;
             }, $data);
         });
+
+        $log->debug('end new index');
+        $log->debug('');
 
         return $this->json([
             'meta' => $paginator->getMeta(),

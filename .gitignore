@@ -16,7 +16,7 @@ Thumbs.db
 .env
 main-local.php
 /app/vendor
-
+/app/log/news.log
 # ansible
 /ansible/hosts.txt
 /ansible/roles/app/templates/main-local.j2

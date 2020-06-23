@@ -28,6 +28,21 @@
 - name: Composer dump-autoload
   shell: cd "{{ base_root }}/app"; composer du
 
+- name: Create a log directory if it does not exist
+  file:
+    path: "{{ base_root }}/app/log"
+    state: directory
+    mode: 0777
+
+- name: Create log file
+  copy:
+    content: ""
+    dest: "{{ base_root }}/app/log/news.log"
+    force: no
+#    group: sys
+#    owner: root
+    mode: 0666
+
 - name: confing
   template:
     src: main-local.j2

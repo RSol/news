@@ -30,6 +30,7 @@ class Sort
         $this->sort = $sort;
     }
 
+
     public function __toString()
     {
         if (!$this->sort) {
@@ -44,5 +45,13 @@ class Sort
         }
         $order = implode(', ', $order);
         return " ORDER BY " . $order;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSort(): array
+    {
+        return $this->sort;
     }
 }

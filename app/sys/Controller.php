@@ -72,4 +72,12 @@ class Controller
         header("Location: {$url}");
         exit();
     }
+
+    /**
+     * @return \Monolog\Logger
+     */
+    protected function getLogger()
+    {
+        return App::getLogger();
+    }
 }

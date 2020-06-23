@@ -7,6 +7,8 @@ use app\helpers\ArrayHelper;
 use app\sys\cache\MemcacheCache;
 use app\sys\db\Connection;
 use app\sys\exceptions\ExceptionHandler;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 
 class App
 {
@@ -19,6 +21,11 @@ class App
      * @var Router
      */
     public $router;
+
+    /**
+     * @var Logger
+     */
+    private static $logger;
 
     public function __construct($config, $routes)
     {
@@ -48,5 +55,15 @@ class App
     public function getCache($config)
     {
         return MemcacheCache::getInstanse($config);
+    }
+
+    public static function getLogger()
+    {
+        if (static::$logger) {
+            return static::$logger;
+        }
+        static::$logger = new Logger('news');
+        static::$logger->pushHandler(new StreamHandler(__DIR__ . '/../log/news.log', Logger::DEBUG));
+        return static::$logger;
     }
 }

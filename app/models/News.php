@@ -61,13 +61,32 @@ class News extends Model
 
     public function findAll(QueryLOSParams $params = null)
     {
-        $params = $params ?: (new QueryLOSParams());
-
-        $tableName = static::tableName();
-        $sql = "SELECT id, category_id, title, description, image, created_at FROM {$tableName}" . $params;
+        $sql = $this->getSql($params ?: (new QueryLOSParams()));
 
         $query = $this->getConnection()->query($sql);
         return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @param $params
+     * @return string
+     */
+    private function getSql(QueryLOSParams $params)
+    {
+        $tableName = static::tableName();
+        $index = '';
+        foreach ($params->sort->getSort() as $field => $dir) {
+            $parts = [
+                'index',
+                $field
+            ];
+            if ($dir) {
+                $parts[] = 'desc';
+            }
+            $index = implode('_', $parts);
+            $index = " USE INDEX ({$index}) ";
+        }
+        return "SELECT id, category_id, title, description, image, created_at FROM {$tableName}{$index}" . $params;
     }
 
     public function findOne(int $id)
